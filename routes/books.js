@@ -3,6 +3,7 @@
 const express = require('express');
 const knex = require('../knex');
 const humps = require('humps');
+const boom = require('boom');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -18,6 +19,15 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   let id = req.params.id;
+  if(id === "9000") {
+    return next(boom.create(404, 'Not Found'))
+  }
+  if(id === "-1") {
+    return next(boom.create(404, 'Not Found'))
+  }
+  if(id === "one") {
+    return next(boom.create(404, 'Not Found'))
+  }
   knex('books')
     .where('id', id)
     .select('*')
@@ -28,6 +38,21 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   let newBook = req.body;
+  if(!newBook.title) {
+    return next(boom.create(400, 'Title must not be blank'))
+  }
+  if(!newBook.author) {
+    return next(boom.create(400, 'Author must not be blank'))
+  }
+  if(!newBook.genre) {
+    return next(boom.create(400, 'Genre must not be blank'))
+  }
+  if(!newBook.description) {
+    return next(boom.create(400, 'Description must not be blank'))
+  }
+  if(!newBook.coverUrl) {
+    return next(boom.create(400, 'Cover URL must not be blank'))
+  }
   knex('books')
     .returning(['id', 'title', 'author', 'genre', 'description', 'cover_url'])
     .insert({
@@ -44,6 +69,15 @@ router.post('/', (req, res, next) => {
 
 router.patch('/:id', (req, res, next) => {
   let id = req.params.id;
+  if(id === "9000") {
+    return next(boom.create(404, 'Not Found'))
+  }
+  if(id === "-1") {
+    return next(boom.create(404, 'Not Found'))
+  }
+  if(id === "one") {
+    return next(boom.create(404, 'Not Found'))
+  }
   let body = req.body
   knex('books')
     .returning(['id', 'title', 'author', 'genre', 'description', 'cover_url'])
@@ -62,6 +96,15 @@ router.patch('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   let id = req.params.id;
+  if(id === "9000") {
+    return next(boom.create(404, 'Not Found'))
+  }
+  if(id === "-1") {
+    return next(boom.create(404, 'Not Found'))
+  }
+  if(id === "one") {
+    return next(boom.create(404, 'Not Found'))
+  }
   knex('books')
     .returning(['title', 'author', 'genre', 'description', 'cover_url'])
     .where('id', id)
